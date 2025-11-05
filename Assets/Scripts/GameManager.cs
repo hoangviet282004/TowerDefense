@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     private float _gameSpeed = 1f;
     public float GameSpeed => _gameSpeed;
+
+    private bool _isCheatEnabled = false;
 
     private void Awake()
     {
@@ -47,6 +50,36 @@ public class GameManager : MonoBehaviour
     {
         OnLivesChanged?.Invoke(_lives);
         OnResourcesChanged?.Invoke(_resources);
+    }
+
+    // ==============Cheat Code ====================
+    private void Update()
+    {
+        // ✅ Bật/Tắt cheat bằng Ctrl + F
+        if (Keyboard.current.leftCtrlKey.isPressed && Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            _isCheatEnabled = !_isCheatEnabled;
+
+            if (_isCheatEnabled)
+            {
+                _resources = 999999;
+                Debug.Log("<color=yellow>💰 CHEAT MODE ENABLED: Unlimited Resources!</color>");
+            }
+            else
+            {
+                _resources = LevelManager.Instance.CurrentLevel.startingResources;
+                Debug.Log("<color=red>❌ CHEAT MODE DISABLED</color>");
+            }
+
+            OnResourcesChanged?.Invoke(_resources);
+        }
+
+        // ✅ Khi cheat bật, luôn giữ resource cực cao
+        if (_isCheatEnabled)
+        {
+            _resources = 999999;
+            OnResourcesChanged?.Invoke(_resources);
+        }
     }
 
     private void HandleEnemyReachedEnd(EnemyData data)
