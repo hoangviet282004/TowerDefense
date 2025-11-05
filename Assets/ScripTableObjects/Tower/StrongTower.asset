@@ -16,7 +16,7 @@ MonoBehaviour:
   shootInterval: 1
   projectileSpeed: 4
   projecttileDuration: 3
-  damage: 10
+  damage: 5
   projectileSize: 2.2
   cost: 100
   sprite: {fileID: -1676851070548306391, guid: 9ff7eee6bca0af64fa8bd38152374f5d, type: 3}

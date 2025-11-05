@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level2
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   levelName: Level2
-  wavesToWin: 2
-  startingResources: 150
-  startingLives: 15
+  wavesToWin: 10
+  startingResources: 100
+  startingLives: 10
+  difficultyMultiplier: 1.5

@@ -121,7 +121,21 @@ public class Spawner : MonoBehaviour
             GameObject spawnedObject = pool.GetPooledObject();
             spawnedObject.transform.position = transform.position;
 
-            float healthMultiplier = 1f + (_waveCounter * 0.1f); // 40% per wave
+            //float healthMultiplier = 1f + (_waveCounter * 0.1f); // 40% per wave
+            //=====================|| ==================//
+            // Lấy hệ số độ khó từ Level hiện tại
+
+                /*Wave waveMultiplier  Tổng hệ số(healthMultiplier)   So với Level 1(1.0)
+                Wave 1  1.0 1.5 × 1.0 = 1.5 Quái trâu hơn 50 %
+                Wave 2  1.1 1.5 × 1.1 = 1.65    Trâu hơn 65 %*/
+            float levelMultiplier = LevelManager.Instance.CurrentLevel.difficultyMultiplier;
+
+            // Tăng thêm theo wave
+            float waveMultiplier = 1f + (_waveCounter * 0.1f);
+
+            // Tổng hệ số nhân máu
+            float healthMultiplier = levelMultiplier * waveMultiplier;
+
             Enemy enemy = spawnedObject.GetComponent<Enemy>();
             enemy.Initialize(healthMultiplier);
 

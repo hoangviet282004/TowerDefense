@@ -43,6 +43,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject missionCompletePanel;
     [SerializeField] private Button nextLevelButton;
 
+    [SerializeField] private TMP_Text levelText;
 
     private void OnEnable()
     {
@@ -77,6 +78,12 @@ public class UIController : MonoBehaviour
         // *** Load saved SFX setting
         bool sfxOn = PlayerPrefs.GetInt("SFX", 1) == 1;
         AudioManager.instance.ToggleSFX(sfxOn);
+
+        int currentLevel = LevelManager.Instance.GetCurrentLevelIndex() + 1;
+        if (levelText != null)
+        {
+            levelText.text = $"Level: {currentLevel}";
+        }
     }
 
     private void Update()
@@ -261,6 +268,14 @@ public class UIController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(showObjective());
+        int currentLevel = LevelManager.Instance.GetCurrentLevelIndex() + 1;
+        string levelName = LevelManager.Instance.CurrentLevel.levelName;
+
+        if (levelText != null)
+        {
+            levelText.text = $"Level {currentLevel}: {levelName}";
+        }
+
     }
 
     private IEnumerator showObjective()
@@ -296,22 +311,13 @@ public class UIController : MonoBehaviour
     }
     public void NextLevel()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        int nextSceneIndex = currentScene.buildIndex + 1;
+        missionCompletePanel.SetActive(false);
+        GameManager.Instance.SetTimeScale(1f);
 
-        Debug.Log($"[NextLevel] CurrentScene: {currentScene.name} (index {currentScene.buildIndex}), NextSceneIndex: {nextSceneIndex}, Total: {SceneManager.sceneCountInBuildSettings}");
-
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            GameManager.Instance.SetTimeScale(1f);
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            Debug.LogWarning("[NextLevel] No next level found!");
-            SceneManager.LoadScene("MainMenu");
-        }
+        // ✅ Dùng LevelManager để load level kế tiếp
+        LevelManager.Instance.LoadNextLevel();
     }
+    
     public void OnSFXToggleChanged(bool value)
     {
         AudioManager.instance.ToggleSFX(value);

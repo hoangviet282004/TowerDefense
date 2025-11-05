@@ -8,9 +8,9 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private TMP_Text highScoreText;
     private void Start()
     {
-        int highestWave = PlayerPrefs.GetInt("HighestWave", 0);
-        Debug.Log("Loaded High Score: " + highestWave);
-        highScoreText.text = $"Highest Wave: {highestWave}";
+        int highestLevel = PlayerPrefs.GetInt("HighestLevel", 1);
+        Debug.Log("Loaded Highest Level: " + highestLevel);
+        highScoreText.text = $"Highest Level: {highestLevel}";
     }
 
     public void StartNewGame()
@@ -25,8 +25,8 @@ public class MainMenuController : MonoBehaviour
 
     public void ResetHighScore()
     {
-        PlayerPrefs.DeleteKey("HighestWave");
+        PlayerPrefs.DeleteKey("HighestLevel");
         PlayerPrefs.Save();
-        highScoreText.text = "Highest Wave: 0";
+        highScoreText.text = "Highest Level: 1";
     }
 }

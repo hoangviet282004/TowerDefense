@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
@@ -31,6 +31,22 @@ public class LevelManager : MonoBehaviour
     public int GetCurrentLevelIndex()
     {
         return System.Array.IndexOf(allLevels, CurrentLevel);
+    }
+
+    public void LoadNextLevel()
+    {
+        int currentIndex = GetCurrentLevelIndex();
+        int nextIndex = currentIndex + 1;
+
+        if (nextIndex < allLevels.Length)
+        {
+            LoadLevel(allLevels[nextIndex]);
+        }
+        else
+        {
+            // Nếu không còn level nào → quay lại MainMenu
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
 }
